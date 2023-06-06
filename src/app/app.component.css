@@ -1,0 +1,18 @@
+.title {
+    font-weight: bold;
+    text-align: center;
+    color: #ff6b6b;
+    margin-bottom: 20px;
+  }
+
+  .container-wrapper {
+    display: flex;
+  }
+  
+  .container {
+    flex: 1;
+  }
+  
+  .router-outlet {
+    flex: 1;
+  }

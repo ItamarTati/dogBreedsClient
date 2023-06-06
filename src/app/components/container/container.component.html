@@ -1,1 +1,8 @@
-<h2>Select a breed and learn more about your next puppy</h2>
+<div class="breed-cards-container">
+  <app-breed-card
+    *ngFor="let breed of dogBreeds"
+    [dogBreed]="breed"
+    [isSelected]="selectedBreedId === breed.id"
+    (breedSelected)="selectBreed($event)"
+  ></app-breed-card>
+</div>
