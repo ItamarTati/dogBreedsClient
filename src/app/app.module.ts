@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { ContainerComponent } from './components/container/container.component'
 import { BreedCardComponent } from './components/breed-card/breed-card.component'
 import { BreedBioComponent } from './components/breed-bio/breed-bio.component'
+import { HttpClientModule } from '@angular/common/http'; 
+
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { BreedBioComponent } from './components/breed-bio/breed-bio.component'
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

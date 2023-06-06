@@ -1,1 +1,15 @@
-<p>breed-bio works!</p>
+<div *ngIf="loading; else breedInfo" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+  
+  <ng-template #breedInfo>
+    <div class="breed-bio" *ngIf="breed">
+      <div class="breed-image">
+        <img [src]="'../../assets/' + breed.id + '.svg'" [alt]="'Image of dog breed ' + breed.name">
+      </div>
+      <div class="breed-details">
+        <h2>{{ breed.name }}</h2>
+        <p>{{ breed.description }}</p>
+      </div>
+    </div>
+  </ng-template>
