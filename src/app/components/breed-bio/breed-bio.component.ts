@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DogBreed, DogBreedServiceService } from '../../services/dog-breed-service.service';
+import { DogBreed } from '../../services/dog-breed-service.service';
+import { Observable } from 'rxjs';
+import { BreedFacade } from '../../store/breed.facade';
 
 @Component({
   selector: 'app-breed-bio',
@@ -8,11 +10,10 @@ import { DogBreed, DogBreedServiceService } from '../../services/dog-breed-servi
   styleUrls: ['./breed-bio.component.css']
 })
 export class BreedBioComponent implements OnInit {
-  public loading = true;
-  public breed: DogBreed | undefined;
-  
+  public breed$!: Observable<DogBreed | null>;
+
   constructor(
-    private readonly dogBreedServiceService: DogBreedServiceService,
+    private readonly breedFacade: BreedFacade,
     private readonly route: ActivatedRoute
   ) {}
 
@@ -24,16 +25,6 @@ export class BreedBioComponent implements OnInit {
   }
 
   getDogBreedDetails(breedId: number): void {
-    this.dogBreedServiceService.getDogBreedById(breedId)
-      .subscribe({
-        next: (breed: DogBreed) => {
-          this.breed = breed;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error fetching dog breed details:', error);
-          this.loading = false;
-        }
-      });
+    this.breed$ = this.breedFacade.fetchDogBreedDetails(breedId);
   }
 }

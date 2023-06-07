@@ -1,8 +1,15 @@
 <div class="breed-cards-container">
-  <app-breed-card
-    *ngFor="let breed of dogBreeds"
-    [dogBreed]="breed"
-    [isSelected]="selectedBreedId === breed.id"
-    (breedSelected)="selectBreed($event)"
-  ></app-breed-card>
+  <ng-container *ngIf="dogBreeds$ | async as dogBreeds else loading">
+    <app-breed-card
+      *ngFor="let breed of dogBreeds"
+      (click)="toggleSelection(breed.id)"
+      [dogBreed]="breed"
+      [isSelected]="(selectedBreedId$ | async) === breed.id"
+    ></app-breed-card>
+  </ng-container>
 </div>
+
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

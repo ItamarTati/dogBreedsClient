@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DogBreed, DogBreedServiceService } from '../../services/dog-breed-service.service';
-import { Router } from '@angular/router';
+import { BreedFacade } from '../../store/breed.facade';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-container',
@@ -8,31 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./container.component.css']
 })
 export class ContainerComponent implements OnInit {
-  dogBreeds: DogBreed[] = [];
-  selectedBreedId: number | null = null;
+  public dogBreeds$!: Observable<Array<DogBreed> | null>;
+  public selectedBreedId$!: Observable<number | null>;
 
-  constructor(private readonly dogBreedServiceService: DogBreedServiceService, private router: Router) {}
+  constructor(private readonly breedFacade: BreedFacade) {}
 
   ngOnInit() {
-    this.getDogBreeds();
+    this.dogBreeds$ = this.breedFacade.fetchDogBreeds();
+    this.selectedBreedId$ = this.breedFacade.getSelectedBreedId();
   }
 
-  selectBreed(breedId: number) {
-    if (this.selectedBreedId === breedId) {
-      this.selectedBreedId = null;
-    } else {
-      this.selectedBreedId = breedId;
-      this.router.navigate(['/dog-breeds', breedId]);
-    }
+  public toggleSelection(dogBreedId: number) {
+    this.breedFacade.selectBreed(dogBreedId);
   }
-
-  getDogBreeds() {
-    this.dogBreedServiceService.getDogBreeds().subscribe({
-      next: (breeds: Array<DogBreed>) => {
-        this.dogBreeds = breeds;
-      },
-      error: (error) => {
-        console.error('Failed to fetch dog breeds:', error);
-      }
-    })};
 }

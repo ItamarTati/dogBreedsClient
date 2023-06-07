@@ -1,4 +1,4 @@
-<div class="breed-card" [ngClass]="{ 'selected': isSelected }" (click)="toggleSelection()" >
+<div class="breed-card" [ngClass]="{ 'selected': isSelected }" >
     <h3>{{ dogBreed.name }}</h3>
     <img [src]="'../../assets/' + dogBreed.id + '.svg'" [alt]="'Image of dog breed ' + dogBreed.name" />
   </div>

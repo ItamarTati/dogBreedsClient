@@ -9,13 +9,8 @@ import { DogBreed } from '../../services/dog-breed-service.service';
 export class BreedCardComponent {
   @Input() dogBreed: DogBreed;
   @Input() isSelected: boolean = false;
-  @Output() breedSelected: EventEmitter<number> = new EventEmitter<number>();
-
   constructor() {
     this.dogBreed = {} as DogBreed;
   }
-
-  toggleSelection() {
-    this.breedSelected.emit(this.dogBreed.id);
-  }
 }
+

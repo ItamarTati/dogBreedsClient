@@ -2,69 +2,54 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { ContainerComponent } from './container.component';
-import { DogBreedServiceService, DogBreed } from '../../services/dog-breed-service.service';
-import { of } from 'rxjs';
+import { BreedFacade } from '../../store/breed.facade';
+import { Subject } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { StoreModule } from '@ngrx/store';
 
 describe('ContainerComponent', () => {
   let component: ContainerComponent;
   let fixture: ComponentFixture<ContainerComponent>;
-  let dogBreedService: DogBreedServiceService;
+  let breedFacade: BreedFacade;
   let router: Router;
+  let selectedBreedIdSubject: Subject<number | null>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ContainerComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [DogBreedServiceService]
+      imports: [RouterTestingModule, HttpClientTestingModule, StoreModule.forRoot({})],
+      providers: [BreedFacade]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContainerComponent);
     component = fixture.componentInstance;
-    dogBreedService = TestBed.inject(DogBreedServiceService);
+    breedFacade = TestBed.inject(BreedFacade);
     router = TestBed.inject(Router);
+    selectedBreedIdSubject = new Subject<number | null>();
+    component.selectedBreedId$ = selectedBreedIdSubject.asObservable();
+  });
+
+  afterEach(() => {
+    selectedBreedIdSubject.complete();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch dog breeds', () => {
-    const dogBreeds: DogBreed[] = [
-      { id: 1, name: 'Bulldog', description: 'Friendly and courageous.' },
-      { id: 2, name: 'Labrador Retriever', description: 'Intelligent and gentle.' },
-      { id: 3, name: 'German Shepherd', description: 'Loyal and protective.' }
-    ];
-
-    jest.spyOn(dogBreedService, 'getDogBreeds').mockReturnValue(of(dogBreeds));
-
-    component.ngOnInit();
-
-    expect(dogBreedService.getDogBreeds).toHaveBeenCalled();
-    expect(component.dogBreeds).toEqual(dogBreeds);
-  });
-
   it('should select a breed', () => {
     const breedId = 1;
 
-    jest.spyOn(router, 'navigate');
+    jest.spyOn(breedFacade, 'selectBreed');
 
-    component.selectBreed(breedId);
+    component.toggleSelection(breedId);
 
-    expect(component.selectedBreedId).toBe(breedId);
-    expect(router.navigate).toHaveBeenCalledWith(['/dog-breeds', breedId]);
-  });
+    selectedBreedIdSubject.subscribe((id) => {
+      expect(id).toBe(breedId);
+    });
 
-  it('should deselect a breed', () => {
-    component.selectedBreedId = 1;
-
-    jest.spyOn(router, 'navigate');
-
-    component.selectBreed(1);
-
-    expect(component.selectedBreedId).toBeNull();
-    expect(router.navigate).not.toHaveBeenCalled();
+    expect(breedFacade.selectBreed).toHaveBeenCalledWith(breedId);
   });
 });

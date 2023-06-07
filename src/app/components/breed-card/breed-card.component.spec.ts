@@ -20,14 +20,4 @@ describe('BreedCardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should emit breedSelected event when toggleSelection is called', () => {
-    const breedId = 1;
-    const breedSelectedSpy = jest.spyOn(component.breedSelected, 'emit');
-
-    component.dogBreed = { id: breedId, name: 'Bulldog', description: 'Friendly and courageous.' };
-    component.toggleSelection();
-
-    expect(breedSelectedSpy).toHaveBeenCalledWith(breedId);
-  });
 });

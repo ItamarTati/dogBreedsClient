@@ -20,7 +20,7 @@ export class DogBreedServiceService {
     return this.apiUrl;
   }
 
-  getDogBreeds(): Observable<DogBreed[]> {
+  getDogBreeds(): Observable<Array<DogBreed>> {
     return this.http.get<DogBreed[]>(`${this.apiUrl}/dog-breeds`);
   }
 
