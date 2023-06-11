@@ -7,6 +7,7 @@
 
   .container-wrapper {
     display: flex;
+    gap: 10px;
   }
   
   .container {
@@ -15,4 +16,10 @@
   
   .router-outlet {
     flex: 1;
+  }
+
+  @media (max-width: 600px) {
+    .container-wrapper {
+      flex-direction: column;
+    }
   }

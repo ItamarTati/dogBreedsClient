@@ -30,7 +30,7 @@ export const breedReducer = createReducer(
     initialState,
     on(selectBreed, (state, { breedId }) => ({
         ...state,
-        selectedBreedId: state.selectedBreedId === breedId ? null : breedId,
+        selectedBreedId: breedId,
     })),
     on(fetchDogBreeds, (state) => ({
         ...state,
